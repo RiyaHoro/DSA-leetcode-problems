@@ -3,33 +3,38 @@
 #include <algorithm>
 #include <unordered_map>
 
+// Directive to bring all identifiers from the std namespace into the current scope
+using namespace std; 
+
 class Solution {
 public:
     /**
      * Groups the anagrams from the input array of strings.
-     * @param strs The array of strings to process.
-     * @return A vector of vectors of strings, where each inner vector contains a group of anagrams.
      */
-    std::vector<std::vector<std::string>> groupAnagrams(std::vector<std::string>& strs) {
-        // map to store the groups: key is the sorted string (canonical form), 
-        // value is the list of original strings that are anagrams of each other.
-        std::unordered_map<std::string, std::vector<std::string>> anagramGroups;
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
         
-        // 1. Iterate through each string in the input
-        for (const std::string& s : strs) {
-            // 2. Create the canonical key by sorting the string's characters
-            std::string key = s; // Make a copy of the string
-            std::sort(key.begin(), key.end());
+        // The map declaration now uses 'string' and 'vector' directly
+        unordered_map<string, vector<string>> anagramGroups;
+        
+        // 1. Iterate and Group
+        for (const string& s : strs) {
             
-            // 3. and 4. Use the sorted string as the key to group the original string
-            // The [] operator will either retrieve the existing vector or create a new one (default-constructed empty vector)
-            // if the key is not found, and then add the string 's' to it.
+            // Create a copy for the key
+            string key = s; 
+            
+            // Sort the characters to create the canonical key
+            // begin() and end() are methods of the string class
+            sort(key.begin(), key.end());
+            
+            // Use the sorted string (key) to look up the list of anagrams 
+            // and add the original string (s) to that list.
             anagramGroups[key].push_back(s);
         }
         
-        // 5. Collect the groups from the map's values
-        std::vector<std::vector<std::string>> result;
-        // Iterate through all key-value pairs in the map
+        // 2. Prepare the Final Result
+        vector<vector<string>> result;
+        
+        // Iterate over the map's values (the vectors of grouped strings)
         for (auto const& [key, group] : anagramGroups) {
             result.push_back(group);
         }
@@ -37,4 +42,3 @@ public:
         return result;
     }
 };
-
